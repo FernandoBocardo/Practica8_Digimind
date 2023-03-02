@@ -188,11 +188,15 @@
                 android:textAlignment="center"
                 />
 
-            <EditText
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btn_time"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:id="@+id/time" />
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/white"
+                android:text="Set time"
+                android:textAllCaps="false"
+                android:textColor="@color/gray" />
 
             <Button
                 android:layout_width="wrap_content"
