@@ -14,11 +14,13 @@ import androidx.lifecycle.ViewModelProvider
 import bocardo.fernando.mydigimind.R
 import bocardo.fernando.mydigimind.databinding.FragmentHomeBinding
 import bocardo.fernando.mydigimind.ui.Task
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
 
     private var adaptador: AdaptadorTareas? = null
     private var _binding: FragmentHomeBinding? = null
+    private val baseDatos = FirebaseFirestore.getInstance()
     companion object {
         var tasks = ArrayList<Task>()
         var first = true

@@ -17,6 +17,7 @@ import java.util.*
 import bocardo.fernando.mydigimind.databinding.FragmentDashboardBinding
 import bocardo.fernando.mydigimind.ui.Task
 import bocardo.fernando.mydigimind.ui.home.HomeFragment
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DashboardFragment : Fragment() {
 
@@ -36,6 +37,8 @@ class DashboardFragment : Fragment() {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val baseDatos = FirebaseFirestore.getInstance()
 
         val btn_time: Button = root.findViewById(R.id.btn_time)
         btn_time.setOnClickListener{
@@ -61,25 +64,35 @@ class DashboardFragment : Fragment() {
         done.setOnClickListener{
             var title = et_titulo.text.toString()
             var time = btn_time.text.toString()
-            var days = ArrayList<String>()
-            if (monday.isChecked)
-                days.add("Monday")
-            if (tuesday.isChecked)
-                days.add("Tuesday")
-            if (wednesday.isChecked)
-                days.add("Wednesday")
-            if (thursday.isChecked)
-                days.add("Thursday")
-            if (friday.isChecked)
-                days.add("Friday")
-            if (saturday.isChecked)
-                days.add("Saturday")
-            if (sunday.isChecked)
-                days.add("Sunday")
+            var mondaySelected = monday.isChecked
+            var tuesdaySelected = tuesday.isChecked
+            var wednesdaySelected = wednesday.isChecked
+            var thursdaySelected = thursday.isChecked
+            var fridaySelected = friday.isChecked
+            var saturdaySelected = saturday.isChecked
+            var sundaySelected = sunday.isChecked
+            var task = hashMapOf(
+                "actividad" to title,
+                "lu" to mondaySelected,
+                "ma" to tuesdaySelected,
+                "mi" to wednesdaySelected,
+                "ju" to thursdaySelected,
+                "vi" to fridaySelected,
+                "sa" to saturdaySelected,
+                "do" to sundaySelected,
+                "tiempo" to time
+            )
 
-            var task = Task(title,days,time)
-            HomeFragment.tasks.add(task)
-            Toast.makeText(root.context, "New task added!", Toast.LENGTH_SHORT).show()
+            baseDatos.collection("actividades")
+                .add(task)
+                .addOnSuccessListener { documentReference ->
+                    Toast.makeText(root.context, "New task added!", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(root.context, "Error adding task", Toast.LENGTH_SHORT).show()
+                }
+
+
         }
         return root
     }
